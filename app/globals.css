@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+  .content-container {
+    @apply max-w-7xl w-full px-10 md:px-5 scroll-mt-10 sm:scroll-mt-40
+  }
+  
+  .darkbg {
+    @apply bg-dark/[.5] fixed z-30 h-screen w-screen top-0 left-0 flex justify-center items-center
+  }
+
+}
+
+.gridcontainer {
+  display: grid;
+  grid-auto-flow: dense;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input {
+  @apply font-medium text-dark
+}
