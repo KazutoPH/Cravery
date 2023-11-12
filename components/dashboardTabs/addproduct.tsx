@@ -7,9 +7,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FaAngleDown } from "react-icons/fa6";
 import { FaAngleUp } from "react-icons/fa6";
 import { FaXmark } from "react-icons/fa6";
+import { useRouter } from 'next/navigation';
 
 function AddProduct() {
   const [category, setCategory] = useState('Select Category')
+  const [selectedCategoryId, setSelectedCategoryId ] = useState('')
   const [ categoryList, setCategoryList ] = useState<any[]>([])
   const [dropdown, setDropdown] = useState(false)
   const [optionsList, setOptionslist] = useState<any[]>([])
@@ -21,6 +23,7 @@ function AddProduct() {
   const [ newCatergoryName, setNewCategoryName ] = useState('')
   const [categoryError, setCategoryError] = useState (false)
   let newCategory = 'New Category'
+  const router = useRouter();
   const ref = useRef<HTMLInputElement>(null)
 
     useEffect ( ()=> {
@@ -33,7 +36,7 @@ function AddProduct() {
   async function getCategories() {
     const CategoryListDB = await getCategory()
 
-    if(CategoryListDB)
+    if(CategoryListDB)  
     setCategoryList(CategoryListDB)
 
     console.log(categoryList)
@@ -62,13 +65,14 @@ function AddProduct() {
   }
 
   
-  const categoryPress = (category: any) => {
+  const categoryPress = (category: any, _id: string) => {
     console.log(category, newCategory)
     if (category === newCategory)
       setPopup(true)
 
     else
       setCategory(category)
+      setSelectedCategoryId(_id)
   }
 
   const addCatergoryPress = () => {
@@ -78,7 +82,8 @@ function AddProduct() {
     setCategoryError(true)
 
     else {
-      setCategoryList( array =>  [...categoryList, { categoryName: newCatergoryName }] )
+      setCategoryList( array =>  [...categoryList, { categoryName: newCatergoryName, _id: '' }] )
+      setCategory(text)
       setPopup(false)
     }
 
@@ -91,10 +96,17 @@ function AddProduct() {
     await addProduct({
       name: e.target.productname.value,
       description: e.target.description.value,
+      categoryId: selectedCategoryId,
       category: category,
       price: e.target.price.value,
       options: optionsList
     })
+
+    console.log(selectedCategoryId)
+    setCategory('Select Category')
+    getCategories()
+    e.target.reset()
+    // router.refresh()
 
     console.log('save press')
   }
@@ -207,9 +219,9 @@ function AddProduct() {
                 <div className='absolute w-full top-[57px] shadow-md bg-white border border-primary border-t-0 rounded-bl-md rounded-br-md z-10'>
                   <ul className='flex flex-col gap-1'>
                     {categoryList.map((cat, i) =>
-                      <li className='text-dark font-medium  px-2 hover:bg-primary hover:text-white' onClick={() => categoryPress(cat.categoryName)} key={i}>{cat.categoryName}</li>
+                      <li className='text-dark font-medium  px-2 hover:bg-primary hover:text-white' onClick={() => categoryPress(cat.categoryName, cat._id)} key={i}>{cat.categoryName}</li>
                     )}
-                    <li className='text-dark font-medium  px-2 hover:bg-primary hover:text-white' onClick={() => categoryPress(newCategory)}>{newCategory}</li>
+                    <li className='text-dark font-medium  px-2 hover:bg-primary hover:text-white' onClick={() => categoryPress(newCategory, '')}>{newCategory}</li>
                   </ul>
                 </div>
               )}

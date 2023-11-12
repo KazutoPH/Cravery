@@ -1,11 +1,15 @@
 import MenuCategory from '@/components/menucategory'
+import { getCategories } from '@/lib/actions/product.actions'
 import React from 'react'
 
-function page() {
+async function page() {
+  const categories = JSON.parse(JSON.stringify(await getCategories()));
   return (
    <main className='w-full py-5 flex justify-center'>
     <div className='content-container'>
-    <MenuCategory/>
+    <MenuCategory 
+    categories={categories}
+    />
     </div>
 
    </main>
