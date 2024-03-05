@@ -2,7 +2,7 @@
 
 import { DashBoard, menuList } from '@/constants'
 import React, { useState } from 'react'
-import Foods from './foods'
+import Foods from './menu/foods'
 import AddProduct from '@/components/dashboardTabs/addproduct'
 import OrderList from '@/components/dashboardTabs/orderlist'
 

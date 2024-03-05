@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@uploadthing/react": "^6.3.2",
     "mongoose": "^8.0.0",
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^4.11.0"
+    "react-icons": "^4.11.0",
+    "uploadthing": "^6.5.0"
   },
   "devDependencies": {
     "@types/node": "^20",

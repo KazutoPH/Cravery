@@ -8,6 +8,7 @@ import { FaAngleDown } from "react-icons/fa6";
 import { FaAngleUp } from "react-icons/fa6";
 import { FaXmark } from "react-icons/fa6";
 import { useRouter } from 'next/navigation';
+import { useUploadThing } from "../../lib/uploadthing"
 
 function AddProduct() {
   const [category, setCategory] = useState('Select Category')
@@ -22,9 +23,11 @@ function AddProduct() {
   const [popup, setPopup] = useState(false)
   const [ newCatergoryName, setNewCategoryName ] = useState('')
   const [categoryError, setCategoryError] = useState (false)
+  const { startUpload } = useUploadThing("media")
   let newCategory = 'New Category'
   const router = useRouter();
   const ref = useRef<HTMLInputElement>(null)
+  
 
     useEffect ( ()=> {
       getCategories() 
@@ -92,23 +95,28 @@ function AddProduct() {
 
   const submitPress = async (e: any) => {
     e.preventDefault()
+    const imgRes = await startUpload(files)
+  
+
     
-    await addProduct({
-      name: e.target.productname.value,
-      description: e.target.description.value,
-      categoryId: selectedCategoryId,
-      category: category,
-      price: e.target.price.value,
-      options: optionsList
-    })
-
-    console.log(selectedCategoryId)
-    setCategory('Select Category')
-    getCategories()
-    e.target.reset()
-    // router.refresh()
-
-    console.log('save press')
+    // if(category === 'Select Category') {
+    //   alert('Select Category First')
+    // } else {
+    //   await addProduct({
+    //     name: e.target.productname.value,
+    //     description: e.target.description.value,
+    //     categoryId: selectedCategoryId,
+    //     category: category,
+    //     price: e.target.price.value,
+    //     options: optionsList
+    //   })
+  
+    //   console.log(selectedCategoryId)
+    //   setCategory('Select Category')
+    //   getCategories()
+    //   e.target.reset()
+    //   router.refresh()
+    // }
   }
 
 
@@ -187,6 +195,7 @@ function AddProduct() {
                 {`${showImage !== '' ? 'Remove Image' : 'Upload Image'}`}
               </button>
               <input
+                name='uploadImage' id='uploadImage'
                 ref={ref}
                 onChange={(e) => handleImage(e)}
                 type='file'
@@ -200,7 +209,7 @@ function AddProduct() {
           <div className='flex gap-2'>
             <div className='flex flex-col flex-1'>
               <p className='font-semibold'>Name</p>
-              <input name='productname' id='productname' className='border border-[#d3d3d3] py-1 px-2 rounded-md outline-none focus-within:border-primary' />
+              <input name='productname' id='productname' required className='border border-[#d3d3d3] py-1 px-2 rounded-md outline-none focus-within:border-primary' />
             </div>
 
             <div className='flex relative flex-col flex-1 overflow-visible hover:cursor-pointer focus-within:border-primary'
@@ -326,6 +335,7 @@ function AddProduct() {
                 Add Category
               </button>
             </div>
+            
           </div>
         </div>
       )}

@@ -9,7 +9,7 @@ export async function getCategories(){
     connectToDB()
     const category = await Category.find({},{'_id': 1, 'categoryName': 1})
 
-    return category
+    return JSON.parse(JSON.stringify(category))
   } catch (error) {
   }
 }
@@ -17,13 +17,13 @@ export async function getCategories(){
 export async function getProductsByCategory(_id:any){
   try {
     connectToDB()
-    const products = await Category.find({ _id: _id})
+    const products = await Category.findOne({ _id: _id})
     .populate({
       path: 'products',
       model: Product
     }).lean()
 
-    return products
+    return JSON.parse(JSON.stringify(products))
   } catch (error) {
   }
 }

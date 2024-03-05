@@ -10,7 +10,7 @@ export async function getCategory(){
 
     const listofcategory = await Category.find().lean()
 
-    return listofcategory
+    return JSON.parse(JSON.stringify(listofcategory))
     
   } catch (error) {
    
